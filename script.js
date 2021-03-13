@@ -1,3 +1,4 @@
+const inputBox = document.getElementById('texto-tarefa');
 const taskList = document.getElementById('lista-tarefas');
 const addTaskBtn = document.getElementById('criar-tarefa');
 const eraseAllBtn = document.getElementById('apaga-tudo');
@@ -15,14 +16,19 @@ if (savedList !== undefined) {
 
 function addTaskToList() {
   const newTask = document.createElement('li');
-  const task = document.getElementById('texto-tarefa').value;
+  const task = inputBox.value;
   newTask.innerText = task;
   taskList.appendChild(newTask);
-  document.getElementById('texto-tarefa').value = '';
+  inputBox.value = '';
 }
 
 // Adicionar event listener no botão
 addTaskBtn.addEventListener('click', addTaskToList);
+inputBox.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    addTaskToList();
+  }
+});
 
 function singleClickItem(event) {
   const clickedItem = event.target;
@@ -30,8 +36,12 @@ function singleClickItem(event) {
   if (currentlySelectedItem !== null) {
     // Remove a classe selected do item previamente selecionado
     currentlySelectedItem.classList.remove('selected');
+  } 
+  if (currentlySelectedItem === clickedItem) {
+    clickedItem.classList.remove('selected')
+  } else {
+    clickedItem.classList.add('selected');
   }
-  clickedItem.classList.add('selected');
 }
 
 function doubleClickItem(event) {
